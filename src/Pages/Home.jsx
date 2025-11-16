@@ -215,10 +215,13 @@ const Home = () => {
   return (
     <>
       <div>
-        <h1 className="text-center my-10 text-4xl font-medium">Contact Book</h1>
-        <div className=" m-4 grid grid-cols-4 gap-4">
+        <div className="flex h-10 my-12 items-center justify-center">
+          <img src="/ContactBookLogo.png" alt="logo" className="h-full m-2" />
+          <h1 className="text-center text-4xl font-medium">Contact Book</h1>
+        </div>
+        <div className=" m-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="col-span-1">
-            <div className="border p-6 flex flex-col justify-center items-center  shadow-md rounded-xl">
+            <div className="shadow-xl border border-base-300 p-6 flex flex-col justify-center items-center rounded-xl bg-white">
               <h2 className="text-gray-800 text-2xl font-semibold my-3">
                 Add Contact
               </h2>
@@ -350,7 +353,11 @@ const Home = () => {
                   Edit
                 </button>
               ) : (
-                <button className="btn" onClick={onClickAdd}>
+                <button
+                  // className="btn bg-sky-400 text-sky-50 border-0 hover:shadow-lg hover:bg-sky-500 rounded-2xl"
+                  className="btn m-1 bg-sky-100 text-sky-500 rounded-2xl border-0 hover:bg-sky-200 hover:shadow-lg hover:text-sky-600"
+                  onClick={onClickAdd}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -371,8 +378,161 @@ const Home = () => {
             </div>
           </div>
 
-          <div className="col-span-3">
-            <div className="border p-6 shadow-md rounded-xl">
+          <div className="col-span-1 md:col-span-3 shadow-xl border border-base-300 rounded-xl bg-white">
+            <div className=" p-8">
+              <h1 className="text-2xl font-semibold m-3">Favorite Contacts</h1>
+              <div className="overflow-x-auto">
+                <table className="table">
+                  {/* head */}
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>Name</th>
+                      <th className="text-center">Phone</th>
+                      <th className="text-center">Email</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {/* row 1 */}
+
+                    {contactList.length > 0 ? (
+                      contactList
+                        .filter((favContact) => favContact.favorite == true)
+                        .map((eachContact, index) => (
+                          <tr key={index}>
+                            <td>
+                              {eachContact.favorite == true ? (
+                                <div
+                                  className="tooltip tooltip-right"
+                                  data-tip="Remove from favorites"
+                                >
+                                  <button
+                                    className="btn btn-circle"
+                                    title="Add to Fav"
+                                    onClick={() =>
+                                      onClickRemoveFavorite(eachContact.id)
+                                    }
+                                  >
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      fill="#FE4072"
+                                      viewBox="0 0 24 24"
+                                      strokeWidth="1.5"
+                                      stroke="currentColor"
+                                      className="size-[1.3em]"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
+                                      />
+                                    </svg>
+                                  </button>
+                                </div>
+                              ) : (
+                                <div
+                                  className="tooltip tooltip-right"
+                                  data-tip="Add to favorites"
+                                >
+                                  <button
+                                    className="btn btn-circle"
+                                    onClick={() =>
+                                      onClickAddFavorite(eachContact.id)
+                                    }
+                                  >
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                      strokeWidth="2.5"
+                                      stroke="currentColor"
+                                      className="size-[1.2em]"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
+                                      />
+                                    </svg>
+                                  </button>
+                                </div>
+                              )}
+                            </td>
+                            <td>
+                              <div className="flex items-center gap-3">
+                                <div className="avatar">
+                                  <div className="mask mask-squircle h-12 w-12">
+                                    <img
+                                      src={
+                                        eachContact.photo
+                                          ? eachContact.photo
+                                          : "https://cdn-icons-png.flaticon.com/512/7310/7310896.png "
+                                      }
+                                      alt={eachContact.name}
+                                    />
+                                  </div>
+                                </div>
+                                <div>
+                                  <div className="font-bold">
+                                    {eachContact.name}
+                                  </div>
+                                </div>
+                              </div>
+                            </td>
+                            <td className="text-center">
+                              <a
+                                href={`tel:${eachContact.phone}`}
+                                className="text-blue-900 hover:underline"
+                              >
+                                {eachContact.phone}
+                              </a>
+                            </td>
+                            <td className="text-center">
+                              {eachContact.email ? (
+                                <a
+                                  href={`mailto:${eachContact.email}`}
+                                  className="text-blue-900 hover:underline"
+                                >
+                                  {eachContact.email}
+                                </a>
+                              ) : (
+                                "-"
+                              )}
+                            </td>
+                            <td className="text-center">
+                              <button
+                                className="btn m-1 bg-amber-100 text-amber-500 rounded-2xl border-0 hover:bg-amber-200 hover:shadow-lg hover:text-amber-600"
+                                onClick={() => onClickEdit(eachContact)}
+                              >
+                                Edit
+                              </button>
+                              <button
+                                className="btn m-1 bg-red-100 text-red-500 rounded-2xl border-0 hover:bg-red-200 hover:shadow-lg hover:text-red-600"
+                                onClick={() => onClickDelete(eachContact.id)}
+                              >
+                                Delete
+                              </button>
+                            </td>
+                          </tr>
+                        ))
+                    ) : (
+                      <tr>
+                        <td
+                          colSpan={5}
+                          className="text-center text-xl text-red-500 font-semibold"
+                        >
+                          No contacts added
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div className=" p-8">
+              <h1 className="text-2xl font-semibold m-3">All Contacts</h1>
               <div className="overflow-x-auto">
                 <table className="table">
                   {/* head */}
@@ -492,13 +652,13 @@ const Home = () => {
                           </td>
                           <td className="text-center">
                             <button
-                              className="btn m-1"
+                              className="btn m-1 bg-amber-100 text-amber-500 rounded-2xl border-0 hover:bg-amber-200 hover:shadow-lg hover:text-amber-600"
                               onClick={() => onClickEdit(eachContact)}
                             >
                               Edit
                             </button>
                             <button
-                              className="btn m-1"
+                              className="btn m-1 bg-red-100 text-red-500 rounded-2xl border-0 hover:bg-red-200 hover:shadow-lg hover:text-red-600"
                               onClick={() => onClickDelete(eachContact.id)}
                             >
                               Delete
